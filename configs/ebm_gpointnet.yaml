@@ -1,0 +1,43 @@
+epochs: 400
+output_dir: output_dir
+
+model:
+  name: VanillaEBM
+  ebm:
+    name: Gpointnet
+    hidden_size: [[64,128,256,512,1024], [512,256,64]]
+    batch_norm: ln
+  mcmc:
+    name: Langevin
+    num_steps: 64
+    step_size: 0.02
+    refsig: 0.3
+    langevin_clip: 1
+
+dataset:
+  train:
+    name: ModelNetPreprocessedPointCloud
+    dataroot: ../../Dataset/PointCloud/ModelNet40_pcd
+    category: chair
+    batch_size: 32
+    mode: train
+  test:
+    name: ModelNetPreprocessedPointCloud
+    dataroot: ../../Dataset/PointCloud/ModelNet40_pcd
+    category: chair
+    batch_size: 32
+    mode: test
+
+optimizer:
+  optimEBM:
+    name: Adam
+    beta1: 0.9
+    learning_rate: 0.0005
+
+log_config:
+  interval: 10
+  visiual_interval: 50
+  samples_every_row: 10
+
+snapshot_config:
+  interval: 5

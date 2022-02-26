@@ -1,0 +1,47 @@
+epochs: 1000
+output_dir: output_dir
+min_max: [0, 255]
+
+model:
+  name: VanillaEBM
+  ebm:
+    name: Imageobject
+    # use_default_init: True
+  mcmc:
+    name: Langevin
+    num_steps: 10
+    step_size: 0.1
+    refsig: 1
+  params:
+    warm_start: 1
+    num_chain: 16
+
+dataset:
+  train:
+    name: ImageDataSet
+    dataroot: data
+    category: egret
+    image_size: 110
+    batch_size: 1
+  # test:
+  #   name: VoxelDataSet
+  #   dataroot: ../../Dataset/PointCloud/ModelNet40
+  #   category: chair
+  #   batch_size: 100
+  #   data_size: 100
+  #   resolution: 32
+  #   mode: test
+
+optimizer:
+  optimEBM:
+    name: Adam
+    beta1: 0.5
+    learning_rate: 0.0001
+
+log_config:
+  interval: 200
+  visiual_interval: 200
+  samples_every_row: 10
+
+snapshot_config:
+  interval: 100

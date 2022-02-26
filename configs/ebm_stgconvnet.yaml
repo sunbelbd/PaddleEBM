@@ -1,0 +1,48 @@
+epochs: 500
+output_dir: output_dir
+min_max: [0, 255]
+
+model:
+  name: VanillaEBM
+  ebm:
+    name: Videonet
+    use_default_init: True
+  mcmc:
+    name: Langevin
+    num_steps: 20
+    step_size: 0.3
+    refsig: 1
+    # langevin_clip: 1
+  params:
+    warm_start: 1
+    num_chain: 1
+
+dataset:
+  train:
+    name: VideoDataSet
+    dataroot: ../../Dataset/trainingVideo
+    category: fire_pot
+    batch_size: 1
+    num_frames: 70
+  # test:
+  #   name: VoxelDataSet
+  #   dataroot: ../../Dataset/PointCloud/ModelNet40
+  #   category: chair
+  #   batch_size: 100
+  #   data_size: 100
+  #   resolution: 32
+  #   mode: test
+
+optimizer:
+  optimEBM:
+    name: Adam
+    beta1: 0.5
+    learning_rate: 0.001
+
+log_config:
+  interval: 1
+  visiual_interval: 1
+  samples_every_row: 10
+
+snapshot_config:
+  interval: 5

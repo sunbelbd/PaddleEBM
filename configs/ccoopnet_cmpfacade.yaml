@@ -1,0 +1,68 @@
+epochs: 500
+output_dir: output_dir
+
+model:
+  name: ConditionalEBM
+  generator:
+    name: Img2img
+    norm_type: batch
+    input_nz: 100
+    input_ncondition: 10
+    output_nc: 3
+    ngf: 64
+    init_gain: 0.002
+    random_type: normal
+  ebm:
+    name: Img2img
+    nef: 64
+    input_sz: 28
+    input_ncondition: 10
+    input_nc: 3
+    output_nc: 3
+    init_gain: 0.002
+  params:
+    lambda_kl: 0.2
+    input_ncondition: 10
+    gen_refsig: 0.3
+
+  mcmc:
+    name: Langevin
+    num_steps: 20
+    step_size: 0.002
+    refsig: 0.016    
+
+dataset:
+  train:
+    name: CmpFacadeDataset
+    dataroot: data/CmpFacade
+    batch_size: 16
+    transforms:
+      - name: Resize
+        size: [128, 128]
+        keys: [image]
+  test:
+    name: CmpFacadeDataset
+    dataroot: data/CmpFacade
+    batch_size: 16
+    transforms:
+      - name: Resize
+        size: [128, 128]
+        keys: [image]
+
+optimizer:
+  optimG:
+    name: Adam
+    beta1: 0.5
+    learning_rate: 0.0001
+  optimEBM:
+    name: Adam
+    beta1: 0.5
+    learning_rate: 0.003
+
+log_config:
+  interval: 100
+  visiual_interval: 500
+  samples_every_row: 10
+
+snapshot_config:
+  interval: 5

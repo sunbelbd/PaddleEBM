@@ -1,0 +1,53 @@
+epochs: 128
+output_dir: output_dir
+
+model:
+  name: VanillaEBM
+  ebm:
+    name: ImageShortRun
+    nef: 64
+    input_nc: 3
+    use_default_init: True
+  mcmc:
+    name: Langevin
+    num_steps: 100
+    step_size: 1.414
+    noise_ratio: 0.007072
+    refsig: 0 
+  params:
+    add_noise_to_obs: 0.03
+
+dataset:
+  train:
+    name: CommonVisionDataset
+    dataset_name: Cifar10
+    dataroot: None
+    batch_size: 64
+    mode: train
+    transforms:
+      - name: Normalize
+        mean: [127.5]
+        std: [127.5]
+  test:
+    name: CommonVisionDataset
+    dataset_name: Cifar10
+    dataroot: None
+    batch_size: 64
+    mode: test
+    transforms:
+      - name: Normalize
+        mean: [127.5]
+        std: [127.5]
+
+optimizer:
+  optimEBM:
+    name: Adam
+    learning_rate: 0.0001
+
+log_config:
+  interval: 100
+  visiual_interval: 500
+  samples_every_row: 8
+
+snapshot_config:
+  interval: 5

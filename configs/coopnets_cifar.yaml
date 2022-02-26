@@ -1,0 +1,69 @@
+epochs: 60
+output_dir: output_dir
+
+model:
+  name: CoopNets
+  generator:
+    name: Conv2d
+    norm_type: batch
+    input_nz: 100
+    input_nc: 3
+    output_nc: 3
+    ngf: 64
+    init_gain: 0.002
+  ebm:
+    name: Conv2d
+    nef: 64
+    input_sz: 32
+    input_nc: 3
+    output_nc: 100
+    init_gain: 0.002
+  mcmc:
+    name: Langevin
+    num_steps: 100
+    step_size: 0.001
+    refsig: 0.016    
+
+dataset:
+  train:
+    name: CommonVisionDataset
+    dataset_name: Cifar10
+    dataroot: None
+    batch_size: 64
+    mode: train
+    transforms:
+      - name: Normalize
+        mean: [127.5]
+        std: [127.5]
+  test:
+    name: CommonVisionDataset
+    dataset_name: Cifar10
+    dataroot: None
+    batch_size: 64
+    mode: test
+    transforms:
+      - name: Normalize
+        mean: [127.5]
+        std: [127.5]
+
+optimizer:
+  optimG:
+    name: Adam
+    beta1: 0.5
+    learning_rate: 0.0001
+  optimEBM:
+    name: Adam
+    beta1: 0.5
+    learning_rate: 0.007
+
+log_config:
+  interval: 100
+  visiual_interval: 500
+  samples_every_row: 10
+
+snapshot_config:
+  interval: 5
+
+validate:
+  interval: 1000
+  metrics: fid

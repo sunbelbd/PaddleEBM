@@ -1,0 +1,47 @@
+epochs: 600
+output_dir: output_dir
+min_max: [0, 255]
+
+model:
+  name: VanillaEBM
+  ebm:
+    name: Imagetexture
+    use_default_init: True
+  mcmc:
+    name: Langevin
+    num_steps: 20
+    step_size: 0.3
+    refsig: 1
+  params:
+    warm_start: 1
+    num_chain: 3
+
+dataset:
+  train:
+    name: ImageDataSet
+    dataroot: data
+    category: texture
+    image_size: 224
+    batch_size: 1
+  # test:
+  #   name: VoxelDataSet
+  #   dataroot: ../../Dataset/PointCloud/ModelNet40
+  #   category: chair
+  #   batch_size: 100
+  #   data_size: 100
+  #   resolution: 32
+  #   mode: test
+
+optimizer:
+  optimEBM:
+    name: Adam
+    beta1: 0.5
+    learning_rate: 0.0005
+
+log_config:
+  interval: 20
+  visiual_interval: 20
+  samples_every_row: 6
+
+snapshot_config:
+  interval: 100
